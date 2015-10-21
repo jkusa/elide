@@ -12,6 +12,7 @@ import com.yahoo.elide.core.exceptions.ForbiddenAccessException;
 import com.yahoo.elide.core.exceptions.InvalidEntityBodyException;
 import com.yahoo.elide.jsonapi.document.processors.DocumentProcessor;
 import com.yahoo.elide.jsonapi.document.processors.IncludedProcessor;
+import com.yahoo.elide.jsonapi.document.processors.SparseFieldsetProcessor;
 import com.yahoo.elide.jsonapi.models.Data;
 import com.yahoo.elide.jsonapi.models.JsonApiDocument;
 import com.yahoo.elide.jsonapi.models.Relationship;
@@ -95,6 +96,9 @@ public class RecordTerminalState extends BaseState {
         //TODO Iterate over set of document processors
         DocumentProcessor includedProcessor = new IncludedProcessor();
         includedProcessor.execute(jsonApiDocument, rec, queryParams);
+
+        DocumentProcessor sparseFieldsetProcessor = new SparseFieldsetProcessor();
+        sparseFieldsetProcessor.execute(jsonApiDocument, rec, queryParams);
 
         return mapper.convertValue(jsonApiDocument, JsonNode.class);
     }

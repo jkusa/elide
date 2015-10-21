@@ -12,6 +12,7 @@ import com.yahoo.elide.core.RequestScope;
 import com.yahoo.elide.core.exceptions.InvalidEntityBodyException;
 import com.yahoo.elide.jsonapi.document.processors.DocumentProcessor;
 import com.yahoo.elide.jsonapi.document.processors.IncludedProcessor;
+import com.yahoo.elide.jsonapi.document.processors.SparseFieldsetProcessor;
 import com.yahoo.elide.jsonapi.models.Data;
 import com.yahoo.elide.jsonapi.models.JsonApiDocument;
 import com.yahoo.elide.jsonapi.models.Relationship;
@@ -71,6 +72,9 @@ public class RelationshipTerminalState extends BaseState {
             // Run include processor
             DocumentProcessor includedProcessor = new IncludedProcessor();
             includedProcessor.execute(doc, record, queryParams);
+
+            DocumentProcessor sparseFieldsetProcessor = new SparseFieldsetProcessor();
+            sparseFieldsetProcessor.execute(doc, record, queryParams);
 
             return () -> Pair.of(HttpStatus.SC_OK, mapper.convertValue(doc, JsonNode.class));
         }

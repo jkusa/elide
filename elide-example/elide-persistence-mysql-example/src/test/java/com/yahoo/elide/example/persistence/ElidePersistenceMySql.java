@@ -133,6 +133,7 @@ public class ElidePersistenceMySql {
                         .given()
                         .contentType("application/vnd.api+json")
                         .accept("application/vnd.api+json")
+                        .param("fields[book]", "title,genre")
                         .get("/book/3").asString());
 
         Assert.assertEquals(

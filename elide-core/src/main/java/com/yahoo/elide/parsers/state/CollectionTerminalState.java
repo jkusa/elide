@@ -16,6 +16,7 @@ import com.yahoo.elide.jsonapi.JsonApiMapper;
 import com.yahoo.elide.jsonapi.document.processors.DocumentProcessor;
 import com.yahoo.elide.jsonapi.document.processors.IncludedProcessor;
 import com.yahoo.elide.jsonapi.document.processors.SortProcessor;
+import com.yahoo.elide.jsonapi.document.processors.SparseFieldsetProcessor;
 import com.yahoo.elide.jsonapi.models.Data;
 import com.yahoo.elide.jsonapi.models.JsonApiDocument;
 import com.yahoo.elide.jsonapi.models.Relationship;
@@ -74,6 +75,9 @@ public class CollectionTerminalState extends BaseState {
         // Run include processor
         DocumentProcessor includedProcessor = new IncludedProcessor();
         includedProcessor.execute(jsonApiDocument, collection, queryParams);
+
+        DocumentProcessor sparseFieldsetProcessor = new SparseFieldsetProcessor();
+        sparseFieldsetProcessor.execute(jsonApiDocument, collection, queryParams);
 
         DocumentProcessor sortProcessor = new SortProcessor();
         sortProcessor.execute(jsonApiDocument, collection, queryParams);
