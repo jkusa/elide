@@ -5,7 +5,7 @@
  */
 package com.yahoo.elide.errorEncodingTests;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import com.yahoo.elide.initialization.AbstractIntegrationTestInitializer;

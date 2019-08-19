@@ -6,13 +6,8 @@
 
 package com.yahoo.elide.tests;
 
-import static com.jayway.restassured.RestAssured.given;
-import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.attr;
-import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.attributes;
-import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.datum;
-import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.id;
-import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.resource;
-import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.type;
+import static com.yahoo.elide.contrib.testhelpers.jsonapi.JsonApiDSL.*;
+import static io.restassured.RestAssured.given;
 
 import com.yahoo.elide.contrib.testhelpers.jsonapi.elements.Resource;
 import com.yahoo.elide.core.HttpStatus;
@@ -64,21 +59,21 @@ class UserTypeIT extends IntegrationTest {
         );
 
         given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .body(datum(resource))
-            .post("/person")
-            .then()
-            .statusCode(HttpStatus.SC_CREATED);
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .body(datum(resource))
+                .post("/person")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
 
         String actual = given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .get("/person/1")
-            .then()
-            .statusCode(HttpStatus.SC_OK)
-            .extract()
-            .body().asString();
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .get("/person/1")
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .body().asString();
 
         JSONAssert.assertEquals(datum(resource).toJSON(), actual, true);
     }
@@ -112,30 +107,30 @@ class UserTypeIT extends IntegrationTest {
         );
 
         given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .body(datum(original))
-            .post("/person")
-            .then()
-            .statusCode(HttpStatus.SC_CREATED);
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .body(datum(original))
+                .post("/person")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
 
         given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .body(datum(modified))
-            .patch("/person/2")
-            .then()
-            .statusCode(HttpStatus.SC_NO_CONTENT);
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .body(datum(modified))
+                .patch("/person/2")
+                .then()
+                .statusCode(HttpStatus.SC_NO_CONTENT);
 
         String actual = given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .get("/person/2")
-            .then()
-            .statusCode(HttpStatus.SC_OK).extract().body().asString();
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .get("/person/2")
+                .then()
+                .statusCode(HttpStatus.SC_OK).extract().body().asString();
 
         JSONAssert.assertEquals(datum(modified).toJSON(), actual, true);
-     }
+    }
 
     @Test
     public void testUserTypeMissingUserTypeField() throws Exception {
@@ -158,19 +153,19 @@ class UserTypeIT extends IntegrationTest {
 
 
         given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .body(datum(resource))
-            .post("/person")
-            .then()
-            .statusCode(HttpStatus.SC_CREATED);
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .body(datum(resource))
+                .post("/person")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
 
         String actual = given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .get("/person/3")
-            .then()
-            .statusCode(HttpStatus.SC_OK).extract().body().asString();
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .get("/person/3")
+                .then()
+                .statusCode(HttpStatus.SC_OK).extract().body().asString();
 
         JSONAssert.assertEquals(datum(expected).toJSON(), actual, true);
     }
@@ -200,27 +195,27 @@ class UserTypeIT extends IntegrationTest {
                 attributes(
                         attr("name", "WC"),
                         attr("address", new Address(
-                            "1400 AnyAve St",
-                            null,
-                            new Zip("60412", null)
+                                "1400 AnyAve St",
+                                null,
+                                new Zip("60412", null)
                         ))
                 )
         );
 
         given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .body(datum(resource))
-            .post("/person")
-            .then()
-            .statusCode(HttpStatus.SC_CREATED);
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .body(datum(resource))
+                .post("/person")
+                .then()
+                .statusCode(HttpStatus.SC_CREATED);
 
         String actual = given()
-            .contentType("application/vnd.api+json")
-            .accept("application/vnd.api+json")
-            .get("/person/4")
-            .then()
-            .statusCode(HttpStatus.SC_OK).extract().body().asString();
+                .contentType("application/vnd.api+json")
+                .accept("application/vnd.api+json")
+                .get("/person/4")
+                .then()
+                .statusCode(HttpStatus.SC_OK).extract().body().asString();
 
         JSONAssert.assertEquals(datum(expected).toJSON(), actual, true);
     }

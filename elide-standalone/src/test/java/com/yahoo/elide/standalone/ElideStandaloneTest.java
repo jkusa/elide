@@ -24,8 +24,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
+
+import javax.persistence.EntityManagerFactory;
 
 
 /**

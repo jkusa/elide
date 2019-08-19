@@ -5,15 +5,15 @@
  */
 package com.yahoo.elide.tests
 
-import com.yahoo.elide.initialization.AbstractIntegrationTestInitializer
-
+import static io.restassured.RestAssured.get;
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jayway.restassured.RestAssured
-
+import com.yahoo.elide.initialization.AbstractIntegrationTestInitializer
 import org.testng.Assert
 import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
+
+import static io.restassured.RestAssured.given
 
 /**
  * Tests for pagination
@@ -23,8 +23,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
 
     @BeforeClass
     public void setup() {
-        def result = RestAssured
-                .given()
+        def result = given()
                 .contentType("application/vnd.api+json; ext=jsonpatch")
                 .accept("application/vnd.api+json; ext=jsonpatch")
                 .body('''
@@ -122,8 +121,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
                     ''')
                 .patch("/")
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/vnd.api+json; ext=jsonpatch")
                 .accept("application/vnd.api+json; ext=jsonpatch")
                 .body('''
@@ -185,8 +183,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
                     ''')
                 .patch("/")
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/vnd.api+json; ext=jsonpatch")
                 .accept("application/vnd.api+json; ext=jsonpatch")
                 .body('''
@@ -246,8 +243,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
                     ''')
                 .patch("/")
 
-        RestAssured
-                .given()
+        given()
                 .contentType("application/vnd.api+json; ext=jsonpatch")
                 .accept("application/vnd.api+json; ext=jsonpatch")
                 .body('''
@@ -309,8 +305,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
 
     @Test
     public void testSortingRootCollectionByRelationshipProperty() {
-        def result = mapper.readTree(
-                RestAssured.get("/book?sort=-publisher.name").asString())
+        def result = mapper.readTree(get("/book?sort=-publisher.name").asString())
         //We expect 2 results because the Hibernate does an inner join between book & publisher
         Assert.assertEquals(result.get("data").size(), 2);
 
@@ -321,8 +316,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
         String secondBookName = books.get(1).get("attributes").get("title").asText();
         Assert.assertEquals(secondBookName, "The Old Man and the Sea");
 
-        result = mapper.readTree(
-        RestAssured.get("/book?sort=publisher.name").asString())
+        result = mapper.readTree(get("/book?sort=publisher.name").asString())
         //We expect 2 results because the Hibernate does an inner join between book & publisher
         Assert.assertEquals(result.get("data").size(), 2);
 
@@ -337,7 +331,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
     @Test
     public void testSortingSubcollectionByRelationshipProperty() {
         def result = mapper.readTree(
-                RestAssured.get("/author/1/books?sort=-publisher.name").asString())
+                get("/author/1/books?sort=-publisher.name").asString())
         //We expect 2 results because the Hibernate does an inner join between book & publisher
         Assert.assertEquals(result.get("data").size(), 2);
 
@@ -349,7 +343,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
         Assert.assertEquals(secondBookName, "The Old Man and the Sea");
 
         result = mapper.readTree(
-        RestAssured.get("/author/1/books?sort=publisher.name").asString())
+                get("/author/1/books?sort=publisher.name").asString())
         //We expect 2 results because the Hibernate does an inner join between book & publisher
         Assert.assertEquals(result.get("data").size(), 2);
 
@@ -364,7 +358,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
     @Test
     public void testSortingRootCollectionByRelationshipPropertyWithJoinFilter() {
         def result = mapper.readTree(
-                RestAssured.get("/book?filter[book.authors.name][infixi]=Hemingway&sort=-publisher.name").asString())
+                get("/book?filter[book.authors.name][infixi]=Hemingway&sort=-publisher.name").asString())
         //We expect 2 results because the Hibernate does an inner join between book & publisher
         Assert.assertEquals(result.get("data").size(), 2);
 
@@ -376,7 +370,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
         Assert.assertEquals(secondBookName, "The Old Man and the Sea");
 
         result = mapper.readTree(
-        RestAssured.get("/book?filter[book.authors.name][infixi]=Hemingway&sort=publisher.name").asString())
+                get("/book?filter[book.authors.name][infixi]=Hemingway&sort=publisher.name").asString())
         //We expect 2 results because the Hibernate does an inner join between book & publisher
         Assert.assertEquals(result.get("data").size(), 2);
 
@@ -391,7 +385,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
     @Test
     public void testSortingByRelationshipId() {
         def result = mapper.readTree(
-                RestAssured.get("/book?sort=-publisher.id").asString())
+                get("/book?sort=-publisher.id").asString())
 
         //We expect 8 results because publisher_id is a foreign key inside the book table.
         Assert.assertEquals(result.get("data").size(), 8);
@@ -404,7 +398,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
         Assert.assertEquals(secondBookName, "The Old Man and the Sea");
 
         result = mapper.readTree(
-        RestAssured.get("/book?sort=publisher.id").asString())
+                get("/book?sort=publisher.id").asString())
         Assert.assertEquals(result.get("data").size(), 8);
 
         books = result.get("data");
@@ -429,7 +423,7 @@ public class SortingIT extends AbstractIntegrationTestInitializer {
         );
 
         def result = mapper.readTree(
-                RestAssured.get("/book?sort=-id").asString())
+                get("/book?sort=-id").asString())
         Assert.assertEquals(result.get("data").size(), 8);
 
         JsonNode books = result.get("data");

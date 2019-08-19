@@ -27,7 +27,6 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.SecurityContext;
 
@@ -58,7 +57,8 @@ public interface ElideStandaloneSettings {
      * @return Configured ElideSettings object.
      */
     default ElideSettings getElideSettings(ServiceLocator injector) {
-        EntityManagerFactory entityManagerFactory = Util.getEntityManagerFactory(getModelPackageName(), new Properties());
+        EntityManagerFactory entityManagerFactory = Util.getEntityManagerFactory(getModelPackageName(),
+                new Properties());
         DataStore dataStore = new JpaDataStore(
                 () -> { return entityManagerFactory.createEntityManager(); },
                 (em -> { return new NonJtaTransaction(em); }));
@@ -151,7 +151,7 @@ public interface ElideStandaloneSettings {
     }
 
     /**
-     * Whether Dates should be ISO8601 strings (true) or epochs (false)
+     * Whether Dates should be ISO8601 strings (true) or epochs (false).
      * @return
      */
     default boolean enableIS06081Dates() {
@@ -185,7 +185,7 @@ public interface ElideStandaloneSettings {
      */
     default Consumer<ResourceConfig> getApplicationConfigurator() {
         // Do nothing by default
-        return (x) -> {};
+        return (x) -> { };
     }
 
     /**

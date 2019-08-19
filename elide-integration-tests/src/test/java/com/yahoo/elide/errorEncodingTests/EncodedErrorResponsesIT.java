@@ -5,7 +5,7 @@
  */
 package com.yahoo.elide.errorEncodingTests;
 
-import static com.jayway.restassured.RestAssured.given;
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 import com.yahoo.elide.initialization.AbstractIntegrationTestInitializer;
@@ -66,7 +66,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .accept(JSONAPI_CONTENT_TYPE_WITH_JSON_PATCH_EXTENSION)
                 .body(request)
                 .patch("/parent")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(expected));
     }
@@ -78,7 +78,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .contentType(JSONAPI_CONTENT_TYPE)
                 .accept(JSONAPI_CONTENT_TYPE)
                 .get("/parent/100")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(equalTo(expected));
     }
@@ -93,7 +93,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .accept(JSONAPI_CONTENT_TYPE)
                 .body(request)
                 .post("/invoice")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(expected));
     }
@@ -106,7 +106,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .contentType(JSONAPI_CONTENT_TYPE_WITH_JSON_PATCH_EXTENSION)
                 .accept(JSONAPI_CONTENT_TYPE_WITH_JSON_PATCH_EXTENSION)
                 .body(request).patch()
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(equalTo(expected));
     }
@@ -120,7 +120,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .contentType(JSONAPI_CONTENT_TYPE)
                 .accept(JSONAPI_CONTENT_TYPE)
                 .body(request).post("/invoice")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_LOCKED)
                 .body(equalTo(expected));
     }
@@ -134,7 +134,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .accept(GRAPHQL_CONTENT_TYPE)
                 .body(request)
                 .post("/graphQL")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body(equalTo(expected));
     }
@@ -148,7 +148,7 @@ public class EncodedErrorResponsesIT extends AbstractIntegrationTestInitializer 
                 .accept(GRAPHQL_CONTENT_TYPE)
                 .body(request)
                 .post("/graphQL")
-        .then()
+                .then()
                 .statusCode(HttpStatus.SC_OK)
                 .body(equalTo(expected));
     }

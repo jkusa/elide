@@ -5,12 +5,13 @@
  */
 package com.yahoo.elide.errorObjectsTests;
 
+import static io.restassured.RestAssured.given;
+
 import com.yahoo.elide.initialization.AbstractIntegrationTestInitializer;
 import com.yahoo.elide.initialization.ErrorObjectsIntegrationTestApplicationResourceConfig;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.restassured.RestAssured;
 
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
@@ -34,8 +35,7 @@ public class ErrorObjectsIT extends AbstractIntegrationTestInitializer {
         String request = "{ \"data\": { \"type\": \"nocreate\", \"id\": \"1\" } }";
 
         JsonNode errors = objectMapper.readTree(
-                RestAssured
-                        .given()
+                given()
                         .contentType(JSONAPI_CONTENT_TYPE)
                         .accept(JSONAPI_CONTENT_TYPE)
                         .body(request)
@@ -55,8 +55,7 @@ public class ErrorObjectsIT extends AbstractIntegrationTestInitializer {
         String request = "mutation { nocreate(op: UPSERT, data:{id:\"1\"}) { edges { node { id } } } }";
 
         JsonNode errors = objectMapper.readTree(
-                RestAssured
-                        .given()
+                given()
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .body(request)
